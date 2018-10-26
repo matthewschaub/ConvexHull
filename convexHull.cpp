@@ -6,6 +6,7 @@
 #include <stdlib.h> 
 #include <fstream>
 
+void minY(std::ifstream&);
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
          //call your Quickhull algorithm to solve the problem
          outputFile = "hull_Q.txt";
       }
+   }
       
       //write your convex hull to the outputFile (see class example for the format)
       //you should be able to visulize your convex hull using the "ConvexHull_GUI" program.
@@ -37,6 +39,21 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-int minY (ifstream& infile){
-
+void minY(std::ifstream& infile){
+	int minx, miny, x, y = -1;
+	infile >> minx >> miny;  
+	while(!infile.eof()){
+		infile >> x >> y; 
+		if(y < miny)
+		{
+			minx = x;
+			miny = y;
+		}
+		else if(y == miny && x < minx)
+		{
+			minx = x;
+			miny = y;
+		}
+	}
+	std::cout << "(min x: " << minx << ", min y: " << miny << ")" << std::endl; 
 }
