@@ -21,11 +21,12 @@ bool sortHelper(Point, Point);
 void sortPoints(std::vector<Point>&);
 void printVector(const std::vector<Point>&);
 int grahamHelper(Point, Point, Point);
+void grahamScan(); 
 
 int main(int argc, char *argv[])
 {
    //Second project starts here
-
+	grahamScan();
 
 
    if (argc < 3) 
@@ -39,34 +40,6 @@ int main(int argc, char *argv[])
       if (algType[0]=='G') {
          //call your Graham Scan algorithm to solve the problem
          outputFile = "hull_G.txt";
-         std::ifstream infile ("test.txt", std::ifstream::in);
-		   std::vector<Point> v = getPoints(infile);
-		   std::stack<Point> s; 
-		   printVector(v); 
-		   sortPoints(v); 
-		   printVector(v);
-		   s.push(v[0]);
-		   s.push(v[1]);
-		   s.push(v[2]);
-		   for(int i = 3; i < v.size()-1; ++i)
-		   {
-		   	Point top = s.top(); 
-		   	s.pop();
-		   	while(grahamHelper(s.top(), top, v[i]) < 0)
-		   	{
-		   		top = s.top(); 
-		   		s.pop();
-		   	}
-		   	s.push(top); 
-		   	s.push(v[i]);
-
-		   }
-
-		   while(!s.empty()){
-		   	Point p = s.top(); 
-		   	s.pop(); 
-		   	std::cout << "(" << p.x << ", " << p.y << "),"; 
-		   }
 		} 
 		else if (algType[0]=='J') {
 		         //call your Javis March algorithm to solve the problem
@@ -83,7 +56,36 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
+void grahamScan(){
+	std::ifstream infile ("test.txt", std::ifstream::in);
+   std::vector<Point> v = getPoints(infile);
+   std::stack<Point> s; 
+   printVector(v); 
+   sortPoints(v); 
+   printVector(v);
+   s.push(v[0]);
+   s.push(v[1]);
+   s.push(v[2]);
+   for(int i = 3; i < v.size(); ++i)
+   {
+   	Point top = s.top(); 
+   	s.pop();
+   	while(grahamHelper(s.top(), top, v[i]) < 0)
+   	{
+   		top = s.top(); 
+   		s.pop();
+   	}
+   	s.push(top); 
+   	s.push(v[i]);
 
+   }
+
+   while(!s.empty()){
+   	Point p = s.top(); 
+   	s.pop(); 
+   	std::cout << "(" << p.x << ", " << p.y << "),"; 
+   }
+}
 int grahamHelper(Point a, Point b, Point c)
 {
 	return((b.x - a.x)*(c.y - b.y) - (b.y - a.y)*(c.x - b.x));
@@ -105,9 +107,9 @@ std::vector<Point> getPoints(std::ifstream& infile){
 	std::vector<Point> v; 
 	int x, y; 
 	while(true){
+		infile >> x >> y;
 		if(infile.eof())
-			break; 
-		infile >> x >> y; 
+			break;  
 		v.push_back(Point(x,y));
 	}
 	return v; 
