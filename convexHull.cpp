@@ -70,7 +70,7 @@ void grahamScan(){
    {
    	Point top = s.top(); 
    	s.pop();
-   	while(grahamHelper(s.top(), top, v[i]) < 0)
+   	while(grahamHelper(s.top(), top, v[i]) < 0)//
    	{
    		top = s.top(); 
    		s.pop();
